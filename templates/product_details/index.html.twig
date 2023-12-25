@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductDetailsController!{% endblock %}
+
+
+
+{% block body %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="pageModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Basket</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Please, sign in to buy products
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="/signIn" type="button" class="btn btn-primary">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">{{ product.product.getName() }}</h1>
+    </div>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-sm-8">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-inner" style="border-radius: 15px">
+
+                        {% for imagePath in product.imagePaths %}
+                            <div class="carousel-item active" style="border-radius: 15px">
+                                <img src="{{ imagePath }}" class="d-block w-100" style="border-radius: 15px" alt="...">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-4">
+
+                <div class="card">
+                    <div class="card-header">
+                        {% for tag in product.tags %}
+                            <span class="badge text-bg-secondary">{{ tag.getName() }}</span>
+                        {% endfor %}
+                    </div>
+                    <p class="card-body">{{ product.product.description }}</p>
+
+                    <div class="card-header">
+                        {% if authorized %}
+                            <button onclick="addProduct({{ product.product.id }})" class="btn btn-primary">{{ product.product.price }} ₽</button>
+                        {% else %}
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pageModal">
+                                {{ product.product.price }} ₽
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <br/>
+                <div class="card">
+                    <div class="card-header">
+                        Ingredients
+                    </div>
+                    <p class="card-body">
+                        <div class="d-flex flex-column mb-3">
+                            {% for ingredient in product.ingredients %}
+                            <div class="p-2">
+                                - {{ ingredient.getName() }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

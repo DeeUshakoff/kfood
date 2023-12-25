@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BasketController!{% endblock %}
+
+{% block body %}
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">Basket</h1>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <ul class="list-group align-items-center">
+                    {% if basket.products|length > 0 %}
+
+                    {% for item in basket.products %}
+
+                        <ul id="product-list-item-{{ item.product.id }}" class="list-group list-group-horizontal mb-2">
+                            <li class="list-group-item" style="width: 500px !important;">
+                                <a class="btn btn-dark" href="/product/{{ item.product.id }}">
+                                    {{ item.product.name }}
+                                </a>
+                            </li>
+                            <li class="list-group-item " style="width: 150px !important;">
+                                <div>
+                                    <button onclick="removeOneProductInBasketPage({{ item.product.id }})" class="btn btn-dark">-</button>
+                                    <span id="product-badge-count-{{ item.product.id }}" class="badge bg-primary rounded-pill">{{ item.count }}</span>
+                                    <button onclick="addProductInBasketPage({{ item.product.id }})" class="btn btn-dark">+</button>
+                                </div>
+                            </li>
+                            <li class="list-group-item" style="width: 250px !important;">{{ item.product.price }} ₽ x {{ item.count }} = {{ item.product.price * item.count }} ₽</li>
+                        </ul>
+                    {% endfor %}
+
+                    {% else %}
+                    <div class="d-flex flex-column mb-3 align-items-center">
+                        <div class="p-2">
+                            <h1 class="display-5 fw-bold text-body-emphasis">
+                                Empty :(
+                            </h1>
+                        </div>
+                        <div class="p-2">
+                            <a href="/menu" class="btn btn-primary">
+                                Menu
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Checkout
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column">
+                            <div id="total-products-count" class="p-2">Products count: {{ basket.getBasketSize }}</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex flex-row align-content-center justify-content-center">
+                            <div id="total-products-price" class="p-2">{{ basket.basketTotalPrice }} ₽</div>
+                            <a href="/makeOrder/{{ basket.id }}" class="btn btn-success">Make order</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+{% endblock %}
